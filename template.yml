@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  StripeApiKey:
+    Type: String
+    NoEcho: true
+Globals:
+  Function:
+    LoggingConfig:
+      LogFormat: JSON
+Resources:
+  getPaymentLinkFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getPaymentLinkFunction
+      Handler: src/getPaymentLink.handler
+      Runtime: nodejs22.x
+      Environment:
+        Variables:
+          STRIPE_API_KEY:
+            Ref: StripeApiKey
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: Api
+            Path: /payment-link
+            Method: POST
+    Metadata:
+      BuildMethod: makefile
+  Api:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowMethods:
+        - POST
+        AllowOrigins:
+        - '*'
+        AllowHeaders:
+        - '*'

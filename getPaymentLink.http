@@ -1,0 +1,12 @@
+POST https://m0576bi545.execute-api.us-east-2.amazonaws.com/payment-link
+Content-Type: application/json
+
+{
+  "pricingConfig": {
+    "courseType": "comprehensive-course",
+    "tutoringHours": 10,
+    "aamcContent": true,
+    "uworldContent": true
+  },
+  "installments": "two-months"
+}

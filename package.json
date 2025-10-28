@@ -1,0 +1,17 @@
+{
+  "name": "onesm-stripe-pricing-form-backend",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "stripe": "^18.2.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.16.1",
+    "@types/bun": "latest",
+    "eslint": "^9.29.0",
+    "jiti": "^2.4.2"
+  }
+}
