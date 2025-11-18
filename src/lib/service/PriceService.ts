@@ -1,6 +1,7 @@
 import type { CourseType } from '@/lib/model/CourseType.ts'
 import type PriceData from '@/lib/model/PriceData.ts'
 import type PricingConfiguration from '@/lib/model/PricingConfiguration.ts'
+import pricesMock from '@/lib/prices.mock.ts'
 import { round } from '@/lib/utils.ts'
 
 class PriceService {
@@ -117,6 +118,10 @@ class PriceService {
         config.tutoringHours,
         config.courseType,
       )
+    }
+
+    if (config.weeklyCheckIn) {
+      total += pricesMock.addonPrices.weeklyCheckInPrice
     }
 
     total += this.calculateAddonPrice(prices.addonPrices, config)

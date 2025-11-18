@@ -11,5 +11,6 @@ export default interface PriceData {
     premiumTutorPrice: number
     uworldContentPrice: number
     aamcContentPrice: number
+    weeklyCheckInPrice: number
   }
 }
