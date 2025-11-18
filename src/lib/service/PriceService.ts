@@ -88,16 +88,8 @@ class PriceService {
     if (this.doesCourseProvide15PercentDiscount(courseType)) {
       tutoringPrice = tutoringPrice * 0.85 // 15% discount
     }
-    else if (this.doesCourseProvideComboDiscount(courseType)) {
-      if (tutoringHours <= 20) {
-        tutoringPrice = tutoringPrice -= 700
-      }
-      else if (tutoringHours < 30) {
-        tutoringPrice = tutoringPrice -= 600
-      }
-      else if (tutoringHours >= 30) {
-        tutoringPrice = tutoringPrice -= 500
-      }
+    else if (courseType === 'comprehensive-course') {
+      tutoringPrice = tutoringPrice * 0.80 // 20% discount
     }
     return tutoringPrice
   }
