@@ -5,4 +5,5 @@ export default interface PricingConfiguration {
   tutoringHours: number
   aamcContent: boolean
   uworldContent: boolean
+  weeklyCheckIn: boolean
 }

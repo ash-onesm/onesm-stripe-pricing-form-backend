@@ -18,6 +18,7 @@ const priceMocks: PriceData = {
     premiumTutorPrice: 50,
     uworldContentPrice: 300,
     aamcContentPrice: 300,
+    weeklyCheckInPrice: 980,
   },
 }
 

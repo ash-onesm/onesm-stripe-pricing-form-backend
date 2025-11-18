@@ -33,6 +33,10 @@ class StripeService {
       productName.push('Winter Break MCAT Bootcamp')
     }
 
+    if (pricingConfig.weeklyCheckIn) {
+      productName.push('with Weekly Check-Ins')
+    }
+
     if (pricingConfig.tutoringHours > 0) {
       if (pricingConfig.courseType !== 'plain-hours') {
         productName.push('with')
@@ -70,6 +74,7 @@ class StripeService {
       bootcamp: pricingConfig.courseType === 'bootcamp' ? 'Yes' : 'No',
       aamc: pricingConfig.aamcContent ? 'Yes' : 'No',
       uworld: pricingConfig.uworldContent ? 'Yes' : 'No',
+      weekly_check_in: pricingConfig.weeklyCheckIn ? 'Yes' : 'No',
       tutoring_hours: pricingConfig.tutoringHours,
       premium_tutor: 'No',
       installment_intervals: installments > 1 ? 'month' : '1',
@@ -167,6 +172,8 @@ class StripeService {
       billing_address_collection: 'required',
       phone_number_collection: { enabled: true },
       consent_collection: { terms_of_service: 'required' },
+
+      allow_promotion_codes: true,
 
       after_completion: {
         type: 'redirect',

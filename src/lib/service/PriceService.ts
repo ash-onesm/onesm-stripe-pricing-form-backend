@@ -1,6 +1,7 @@
 import type { CourseType } from '@/lib/model/CourseType.ts'
 import type PriceData from '@/lib/model/PriceData.ts'
 import type PricingConfiguration from '@/lib/model/PricingConfiguration.ts'
+import pricesMock from '@/lib/prices.mock.ts'
 import { round } from '@/lib/utils.ts'
 
 class PriceService {
@@ -73,24 +74,18 @@ class PriceService {
     return lowerPricePoint.hourlyRate - (rateDifference * (hoursAboveLower / hourRange))
   }
 
-  doesCourseProvide15PercentDiscount(courseType: CourseType): boolean {
-    return courseType === 'bootcamp'
-  }
-
-  doesCourseProvideComboDiscount(courseType: CourseType): boolean {
-    return courseType === 'comprehensive-course'
+  doesCourseProvide20PercentDiscount(courseType: CourseType): boolean {
+    return courseType === 'bootcamp' || courseType === 'comprehensive-course'
   }
 
   calculateDiscountedTutoringPrice(tutoringHourPrices: PriceData['tutoringHourPrices'], tutoringHours: number, courseType: CourseType): number {
     const hourlyRate = this.calculateHourlyRate(tutoringHourPrices, tutoringHours)
     let tutoringPrice = tutoringHours * hourlyRate
 
-    if (this.doesCourseProvide15PercentDiscount(courseType)) {
-      tutoringPrice = tutoringPrice * 0.85 // 15% discount
-    }
-    else if (courseType === 'comprehensive-course') {
+    if (this.doesCourseProvide20PercentDiscount(courseType)) {
       tutoringPrice = tutoringPrice * 0.80 // 20% discount
     }
+
     return tutoringPrice
   }
 
@@ -125,9 +120,12 @@ class PriceService {
       )
     }
 
+    if (config.weeklyCheckIn) {
+      total += pricesMock.addonPrices.weeklyCheckInPrice
+    }
+
     total += this.calculateAddonPrice(prices.addonPrices, config)
 
-    // TODO: price precision
     return round(total, 0)
   }
 }
