@@ -110,27 +110,31 @@ class StripeService {
   }
 
   async createPrice(productId: string, pricingConfig: PricingConfiguration, installments: number): Promise<string> {
-    // Return an existing Price for the productId
+    // Calculate the new unit_amount
+    const totalPrice = PriceService.priceCalculator(pricesMock, pricingConfig)
+    const newUnitAmount = installments === 0
+      ? round(totalPrice * 100, 0)
+      : round((totalPrice / installments) * 100, 0)
+
+    // Search for all existing Prices for the productId
     const existingPrices = await this.stripe.prices.search({
       query: `product:"${productId}" AND active:'true'`,
-      limit: 1,
     })
-    if (existingPrices.data.length > 0) {
-      return existingPrices.data[0]!.id
+
+    // Filter to find a price with matching unit_amount
+    const matchingPrice = existingPrices.data.find(price => price.unit_amount === newUnitAmount)
+    if (matchingPrice) {
+      return matchingPrice.id
     }
 
     // Create a new Price for the productId
     const priceParams: Stripe.PriceCreateParams = {
       product: productId,
       currency: 'usd',
+      unit_amount: newUnitAmount,
     }
 
-    const totalPrice = PriceService.priceCalculator(pricesMock, pricingConfig)
-    if (installments === 0) {
-      priceParams.unit_amount = round(totalPrice * 100, 0)
-    }
-    else {
-      priceParams.unit_amount = round((totalPrice / installments) * 100, 0)
+    if (installments !== 0) {
       priceParams.recurring = {
         interval: 'month',
         interval_count: 1,

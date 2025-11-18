@@ -88,7 +88,7 @@ class PriceService {
     if (this.doesCourseProvide15PercentDiscount(courseType)) {
       tutoringPrice = tutoringPrice * 0.85 // 15% discount
     }
-    else if (courseType==='comprehensive-course') {
+    else if (courseType === 'comprehensive-course') {
       tutoringPrice = tutoringPrice * 0.80 // 20% discount
     }
     return tutoringPrice
